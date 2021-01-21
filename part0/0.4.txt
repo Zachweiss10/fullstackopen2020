@@ -1,0 +1,7 @@
+#As soon as "something" is typed into the text box and save is clicked:
+
+#javascript function appends "something" to the list
+# then renders the list again
+# Then makes the call to the server using the Post method below
+browser->server: HTTP POST https://studies.cs.helsinki.fi/new_note_spa
+server->browser: HTTP - 201
