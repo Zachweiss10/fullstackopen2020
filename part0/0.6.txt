@@ -1,0 +1,5 @@
+#javascript function appends "something" to the list
+# then renders the list again
+# Then makes the call to the server using the Post method below
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/spa/new_note_spa
+server->browser: HTTP - 201
