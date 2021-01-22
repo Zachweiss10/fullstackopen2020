@@ -1,42 +1,70 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+import {React, useState} from 'react'
+import ReactDOM from 'react-dom'
 
 
-const Hello = (props) => {
+const Header = ({title}) =>{
   return(
-    <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
-    </div>
+    <>
+    <h1>{title}</h1>
+    </>
   )
 }
-
-const Footer = () => {
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>
+    {text}
+  </button>
+)
+const Good = ({good}) => {
+  console.log(good)
   return(
-    <div>
-      greeting app created by <a href="https://github.com/Zachweiss10">Zachary Weiss</a>
-    </div>
+    <p>Good {good}</p>
+  )
+}
+const Neutral = ({neutral}) => {
+  console.log(neutral)
+  return(
+    <p>Neutral {neutral}</p>
+  )
+}
+const Bad = ({bad}) => {
+  console.log(bad)
+  return(
+    <p>Bad {bad}</p>
   )
 }
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
-  return (
-  <>
-    <h1>Greetings</h1>
-    <Hello name="Zachary" age={26 + 10}/>
-    <Hello name={name} age={age}/>
-    <Footer/>
-  </>
-  )
+  const title = 'Give Feedback'
+  const stats = 'Statistics'
+  const text = ['Good', 'Neutral', 'Bad']
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  
+
+  const handleGoodClick = () => {
+    setGood(good + 1)
+  }
+  const handleNeutralClick = () => {
+    setNeutral(neutral + 1)
+  }
+  const handleBadClick = () => {
+    setBad(bad + 1)
   }
 
+  return (
+    <div>
+      <Header title = {title}/>
+      <Button onClick={ ()=> handleGoodClick()} text = {text[0]}/>
+      <Button onClick={ ()=> handleNeutralClick()} text = {text[1]}/>
+      <Button onClick={ ()=> handleBadClick()} text = {text[2]}/>
+      <Header title = {stats}/>
+      <Good good = {good}/>
+      <Neutral neutral = {neutral} />
+      <Bad bad={bad}/>
+    </div>
+  )
+}
+
+
 ReactDOM.render(<App />, document.getElementById('root'))
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
