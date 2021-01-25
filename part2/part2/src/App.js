@@ -75,10 +75,12 @@ const App = () => {
       .then(response => {
         console.log(response.data)
       })
-      const array = [...persons]
-        console.log(array)
-        array.splice(person.id-1, person.id)
-        console.log(array)
+      const array = []
+      persons.forEach(personKeep => {
+        if (person.name !== personKeep.name){
+          array.push(personKeep)
+        }
+      });
       setPersons(array)
       
     }
