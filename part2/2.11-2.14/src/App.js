@@ -3,7 +3,7 @@ import Persons from './components/Persons'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import Header from './components/Header'
-import personService from './services/personService'
+import axios from 'axios'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -13,11 +13,13 @@ const App = () => {
   const [filter, filterChange] = useState('')
 
   useEffect(() => {
-    personService
-      .getAll()
-      .then(response => {
-        setPersons(response.data)
-      })
+      console.log('effect')
+      axios
+        .get('http://localhost:3001/persons')
+        .then(response => {
+          console.log(response)
+          setPersons(response.data)
+        })
     }, [])
 
 
@@ -34,17 +36,7 @@ const App = () => {
     }
     else{
       //console.log("NOT EXISTS!~")
-      //setPersons(persons.concat(person))  
-      setNewName('')
-      setNewNumber('')
-      personService
-        .create(person)
-        .then(response => {
-          setPersons(persons.concat(response.data))
-          console.log(persons);
-        })
-        
-
+      setPersons(persons.concat(person))   
     }
   }
 
@@ -67,26 +59,6 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const deletePerson = (person) => {
-    const val = window.confirm(`Delete ${person.name}`);
-    if(val){
-    personService
-      .deleteP(person.id)
-      .then(response => {
-        console.log(response.data)
-      })
-      const array = [...persons]
-        console.log(array)
-        array.splice(person.id-1, person.id)
-        console.log(array)
-      setPersons(array)
-      
-    }
-    else{
-      //alert(`${person.name} was not deleted`)
-    }
-  }
-
   const handleFilterChange = (event) =>{
     if(event.target.value === ''){
       setShowAll(true)
@@ -106,7 +78,7 @@ const App = () => {
       <Filter filter={filter} filterChange = {handleFilterChange}/>
       <Form addName = {addName} newName = {newName} newNumber = {newNumber} handleNumberChange={handleNumberChange} handleChange={handleChange}/>
       <Header title = 'Numbers' />
-      <Persons personsToShow = {personsToShow} deletePerson={deletePerson}/>
+      <Persons personsToShow = {personsToShow}/>
     </>
   )
 }
