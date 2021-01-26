@@ -6,7 +6,7 @@
   <li><strong>P0: Fundamentals of Web apps </strong></li>
   <li><strong>P1: Intro to React</strong></li>
   <li><strong>P2: Communicating with the server</strong></li>
-  <li><strong>P3: Programming a server with NodeJS and Express</strong></li>
+  <li><strong>P3: Programming a server with NodeJS and Express </strong><a href=https://cryptic-plains-26796.herokuapp.com/>Deployed Part3</a></li>
   <li><strong>P4: Testing Express servers, user admin</strong></li>
   <li><strong>P5: Testing React apps</strong></li>
   <li><strong>P6: State management with Redux</strong></li>
