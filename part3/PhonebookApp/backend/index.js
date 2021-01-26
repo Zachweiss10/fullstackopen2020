@@ -6,6 +6,7 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 app.use(morgan('combined'))
+app.use(express.static('build'))
 var jsonParser = bodyParser.json()
 
   let persons = [
