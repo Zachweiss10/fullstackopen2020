@@ -3,6 +3,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 app.use(morgan('combined'))
 var jsonParser = bodyParser.json()
 
@@ -88,7 +90,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
