@@ -1,20 +1,27 @@
 require('dotenv').config()
-const { response } = require('express')
+const express = require('express')
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
-const logger = require('logger')
 app.use(cors())
 app.use(morgan('combined'))
 app.use(express.static('build'))
 app.use(express.json())
-//app.use(logger)
-var jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json()
 
-
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message)
+  if(error.name === 'CastError'){
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError'){
+    return response.status(400).json({error: error.message})
+  }
+  next(error)
+}
+app.use(errorHandler)
 
 app.get('/', (request, response) => {
   response.send('<h1> Hello World!</h1>')
@@ -26,7 +33,7 @@ app.get('/info', (request, response) => {
   Person
     .find({})
     .then(result => {
-      result.map(person =>{
+      result.map(() =>{
         count += 1
       })
       res = `<div>Phonebook has info for ${count} people<br><br>${now}</br></br><div/>`
@@ -40,12 +47,12 @@ app.get('/api/persons', (request, response) =>{
     .then(result => {
       console.log(result)
       response.json(result)
-    })  
+    }).catch( error => console.log(error))  
 })
 
 
 
-app.post('/api/persons', jsonParser, (request, response) =>{
+app.post('/api/persons', jsonParser, (request, response, next) =>{
   const body = request.body
   console.log(body)
   if(!body.name || !body.number){
@@ -67,11 +74,11 @@ app.post('/api/persons', jsonParser, (request, response) =>{
     number: body.number,
     id: generateId(),
   })
-  person.save().then(result =>{
-    console.log(result)
-  })
-  //persons = persons.concat(person)
-  response.json(person)
+  person
+    .save()
+    .then(savedPerson =>{
+      response.json(savedPerson)
+  }).catch(error => next(error))
   }) 
 })
 
@@ -88,8 +95,9 @@ app.get('/api/persons/:id', (request, response) => {
   else{
     response.status(404).end()
   }
-  }) 
+  }).catch(error => next(error))
 })
+
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = String(request.params.id)
@@ -112,10 +120,6 @@ const unknownEndpoint = (request,response) => {
 }
 app.use(unknownEndpoint)
 
-const errorHandler = (error, request, response, next) => {
-  response.status(404).send(error)
-}
-app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
