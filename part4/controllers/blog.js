@@ -1,4 +1,5 @@
 const blogRouter = require('express').Router()
+const { ObjectId } = require('bson')
 const Blog = require('../models/blog')
 
 
@@ -20,4 +21,10 @@ blogRouter.delete('/:id', async(request, response)=> {
   response.status(204).end()
 })
 
+blogRouter.put('/:id', async(request, response)=>{
+  const body = new Blog(request.body)
+  console.log(body.id)
+  blogs = await Blog.updateOne({'_id':ObjectId(request.params.id)}, {$set: {title:body.title, author: body.author, url: body.url, likes:body.likes}})
+  response.status(204).json(blogs)
+})
 module.exports = blogRouter
