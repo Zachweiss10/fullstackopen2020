@@ -16,3 +16,5 @@
   <li><strong>P10: React Native</strong></li>
   <li><strong>P11: CI/CD</strong></li>
  </ul>
+
+![alt text](https://github.com/Zachweiss10/fullstackopen2020/blob/main/certificate/ZacharyWeissCertificate.png)
