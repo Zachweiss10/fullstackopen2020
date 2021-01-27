@@ -6,12 +6,9 @@ const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
-const logger = require('logger')
 app.use(cors())
 app.use(morgan('combined'))
 app.use(express.static('build'))
-app.use(express.json())
-//app.use(logger)
 var jsonParser = bodyParser.json()
 
 
@@ -31,7 +28,7 @@ app.get('/info', (request, response) => {
       })
       res = `<div>Phonebook has info for ${count} people<br><br>${now}</br></br><div/>`
       response.send(res)
-    })
+    }) 
 })
 
 app.get('/api/persons', (request, response) =>{
@@ -41,9 +38,9 @@ app.get('/api/persons', (request, response) =>{
       console.log(result)
       response.json(result)
     })  
+     
+  
 })
-
-
 
 app.post('/api/persons', jsonParser, (request, response) =>{
   const body = request.body
@@ -72,7 +69,7 @@ app.post('/api/persons', jsonParser, (request, response) =>{
   })
   //persons = persons.concat(person)
   response.json(person)
-  }) 
+}) 
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -88,7 +85,7 @@ app.get('/api/persons/:id', (request, response) => {
   else{
     response.status(404).end()
   }
-  }) 
+}) 
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -107,15 +104,6 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 })
 
-const unknownEndpoint = (request,response) => {
-  response.status(404).send({error: 'unknown endpoint'})
-}
-app.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-  response.status(404).send(error)
-}
-app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
